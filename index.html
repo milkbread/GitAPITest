@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Evaluate the network of GitHub-User</title>
+  <meta charset="utf-8" />
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+  <script>
+    var data; // a global
+    var user = 'milkbread';
+
+    d3.json("https://api.github.com/users/" + user + "/gists", function(error, json) {
+      if (error) return console.warn(error);
+      data = json;
+      console.log(data)
+      data.forEach(function(gist){
+        console.log(gist.id)
+        d3.json("https://api.github.com/gists/"+gist.id+"/forks", function(error, json_forks){
+          if (error) return console.warn(error);
+          console.log(json_forks.length)
+        })
+      })
+      d3.select('p').text('Found ' + data.length + " gists for user '" + user + "'");
+      //visualizeit();
+    });
+    d3.select('body').append('p').text('Loading...')
+      
+  </script>
+ </body>
+</html>
